@@ -1,0 +1,60 @@
+### 1. Registrar un nuevo usuario
+POST http://localhost:9090/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin_user",
+  "email": "admin@email.com",
+  "password": "password123",
+  "role": "ADMIN"
+}
+
+### ------------------------------------------------------------------
+
+### 2. Iniciar sesión y guardar el JWT automáticamente
+POST http://localhost:9090/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin_user",
+  "password": "password123"
+}
+
+> {%
+    // Captura el token de la respuesta JSON (ej: {"token": "eyJhbG..."})
+    // y lo guarda en la variable global "auth_token"
+    client.global.set("auth_token", response.body.token);
+%}
+
+### ------------------------------------------------------------------
+
+### 3. Petición permitida para cualquier usuario autenticado
+GET http://localhost:9090/movie
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+### ------------------------------------------------------------------
+GET http://localhost:9090/movie/{{idMovie}}}
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+### ------------------------------------------------------------------
+
+### 4. Petición exclusiva para ROL ADMIN (Crear recurso)
+POST http://localhost:9090/movie
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
+
+{
+  "title": "Inception",
+  "description": "Sci-Fi"
+}
+
+### ------------------------------------------------------------------
+PUT http://localhost:9090
+
+### ------------------------------------------------------------------
+
+### 5. Petición exclusiva para ROL USER / CLIENTE
+GET http://localhost:8080/api/catalog/my-list
+Authorization: Bearer {{auth_token}}
+Content-Type: application/json
