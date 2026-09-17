@@ -37,7 +37,7 @@ The application uses a **stateless authentication system**, so the server does n
 
 ---
 
- 👥Roles and Plans
+ Roles and Plans
 
 The system contains three roles:
 
